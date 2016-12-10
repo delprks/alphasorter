@@ -1,6 +1,8 @@
 package com.delprks.alphasorter
 
-object AlphaSorter {
+import com.delprks.alphasorter.util.Config
+
+object AlphaSorter extends Config {
 
   implicit object ArrayOrdering extends Ordering[Array[String]] {
     val INT = "([0-9]+)".r
@@ -19,16 +21,10 @@ object AlphaSorter {
   }
 
   /**
-    * > for adding multilingual support, we would need to convert non-English characters to their English equivalent in the replacements map.
-    *   currently, it only maps the letter È to E, as a guide.
-    *
-    * > if a character, such as a quotation mark needs to be ignored from start of the string, it needs to be added to charsToIgnore
-    *
-    * > if you want leading words to be ignored, add them to wordsToIgnore
+    * for adding multilingual support, we would need to convert non-English characters to their English equivalent in the replacements map.
+    * currently, it only maps the letter È to E, as a guide.
     **/
   def atoz(s: String): Array[String] = {
-    val charsToIgnore = List("\"", "'", "“", "”", "`")
-    val wordsToIgnore = List("the")
     val replacements = Map('\u00C8' -> "E").withDefault(s => s.toString)
 
     import java.text.Normalizer
@@ -36,8 +32,8 @@ object AlphaSorter {
       s.trim.toLowerCase,
       Normalizer.Form.NFKC),
       Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
-      .replaceAll(s"^(${charsToIgnore.mkString("|")})", "")
-      .replaceAll(s"^(${wordsToIgnore.mkString("|")}) ", "")
+      .replaceAll(s"^(${String.join("|", charsToIgnore)})", "")
+      .replaceAll(s"^(${String.join("|", wordsToIgnore)}) ", "")
       .flatMap(replacements.apply)
       .split(s"\\s+|(?=[0-9])(?<=[^0-9])|(?=[^0-9])(?<=[0-9])")
   }
