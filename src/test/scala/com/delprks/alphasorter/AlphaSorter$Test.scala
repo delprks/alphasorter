@@ -1,7 +1,6 @@
 package com.delprks.alphasorter
 
 import com.delprks.alphasorter.AlphaSorter._
-
 import org.specs2.mutable.Specification
 
 class AlphaSorter$Test extends Specification {
