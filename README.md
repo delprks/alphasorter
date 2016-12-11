@@ -17,7 +17,7 @@ for non-English languages.
 scala> TBA
 ```
 
-### Getting Sortilege
+### Getting AlphaSort
 
 TBA
 
